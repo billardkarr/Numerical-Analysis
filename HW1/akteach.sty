@@ -1,0 +1,203 @@
+\nonstopmode
+
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{keystroke}
+\usepackage{tikz}
+\usepackage{ifthen}
+\usetikzlibrary{topaths}
+\usepackage{verbatim}
+\usepackage{listings}
+% \usepackage{amsmath}
+\usepackage{enumerate}
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot[C]{\thepage} % except the center
+\renewcommand{\headrulewidth}{0pt}%
+\renewcommand{\footrulewidth}{0pt}%
+
+\lhead{\firstxmark}
+\rfoot{\lastxmark}
+
+% Added by kk
+\usepackage{amsmath, amssymb,amsthm}
+\usepackage{natbib}
+\usepackage{microtype}
+\usepackage{mathtools}
+\usepackage{xfrac}
+%
+
+\newboolean{issolution}
+\setboolean{issolution}{false}
+\newboolean{isalternative}
+\long\def\altversion#1#2{\ifthenelse{\boolean{isalternative}}{#1}{#2}}
+
+\def\weblink#1#2{\href{#1}{\underline{#2}}\footnote{\url{#1}}}
+
+\colorlet{codeback}{gray!20}
+
+% \lstset{
+%   language=C++,
+%   showstringspaces=false,
+%   basicstyle=\small\sffamily,
+%   stringstyle=\color{blue},
+%   columns=flexible,
+%   backgroundcolor=\color{codeback},
+%   frame=single,
+%   framerule=0pt,
+%   framesep=1.5pt,
+%   includerangemarker=false,
+%   language=C++,
+%   rangebeginprefix=/*\ ,
+%   rangeendprefix=/*\ ,
+% }
+
+% Added by kk
+\lstset{
+language=Python,
+numbers=none,
+frame=single,
+basicstyle=\normalsize\ttfamily,
+commentstyle=\color[rgb]{0.7,0.2,0.2}\ttfamily,
+keywordstyle=\color{blue},
+showstringspaces=false
+}
+
+\lstdefinestyle{custompython}{
+    belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    % frame=single,
+    xleftmargin=\parindent,
+    language=Python,
+    %showstringspaces=false,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\bfseries\color{green!40!black},
+    commentstyle=\itshape\color{purple},
+    identifierstyle=\color{black},
+    stringstyle=\color{orange},
+    keywords=[2]{as,True,False},
+    keywordstyle=[2]\bfseries\color{green!40!black},
+    keywords=[3]{np,sp,plt},
+    keywordstyle=[3]\bfseries\color{blue},
+    numbers=none,
+    columns=fullflexible,
+}
+%
+
+\parskip=0.3em
+\parindent=0pt
+
+\newlength{\akteachheadboxwidth}
+\setlength{\akteachheadboxwidth}{\textwidth}
+\addtolength{\akteachheadboxwidth}{-6mm}
+
+\def\akteachheader#1#2{
+  \tikz \node [text width=\akteachheadboxwidth,fill=gray!20, inner sep=3mm]
+  {
+    \sffamily\bfseries
+    \large
+    #1
+    \\[1ex]
+    \huge #2
+  } ;\\
+}
+\def\akteachsubheader#1{
+  \tikz \node [text width=\akteachheadboxwidth,fill=gray!10,inner sep=3mm]
+  {
+    \sffamily\bfseries
+    #1
+  } ;
+}
+\def\akteachdue#1#2{
+  \akteachsubheader{
+    \sffamily\bfseries Due: #1
+    \hspace*{1cm}
+    \sffamily\bfseries Out: #2
+  }
+}
+\def\akteachnamefield#1{
+  \akteachsubheader{
+    \vspace*{0.3cm}
+    Name: \hrulefill #1
+  }
+}
+\def\akteachprobhead#1{
+  {\large\sffamily\bfseries #1}
+}
+
+\newtheorem{note}{Note}
+
+\def\answerrect#1{\tikz\draw (0,0) rectangle ++(#1,2em) ++(0.5mm,2mm); }
+\def\checkbox{\begin{tikzpicture}
+    \draw [use as bounding box] (0,0) rectangle ++(1em,1em) 
+      coordinate [pos=0.5] (x) ++(0.5mm,2mm);
+  \end{tikzpicture}}
+\def\checkedbox{\begin{tikzpicture}
+    \draw [use as bounding box] (0,0) rectangle ++(1em,1em) 
+      coordinate [pos=0.5] (x) ++(0.5mm,2mm);
+    \ifthenelse{\boolean{issolution}}{ \node at (x) {X}; }{}
+  \end{tikzpicture}}
+
+\def\lanswerrect#1{\tikz \draw (0,0) rectangle (#1,1.25) node [above,anchor=south
+east,inner xsep=0] { Answer };}
+\def\solanswerrect#1#2{
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (#1,1.25)
+    node [pos=0.5] {\ifthenelse{\boolean{issolution}}{#2}{}}
+    node [above,anchor=south east,inner xsep=0] { Answer };
+  \end{tikzpicture}
+}
+
+\tikzset{
+  solbox/.style={
+    draw,fill=black!10, text width=0.9\textwidth,inner sep=3mm
+  }
+}
+\long\def\smallsolbox#1{\colorbox[rgb]{.9,.9,.9}{#1}}
+\long\def\solbox#1{%
+  \smallsolbox{\begin{minipage}[t]{1\columnwidth}%
+  #1%
+  \end{minipage}}%
+}
+
+
+\long\def\textorsolbox#1#2{%
+  \ifthenelse{\boolean{issolution}}{%
+    \smallsolbox{\begin{minipage}[t]{1\columnwidth}%
+    #2%
+    \end{minipage}}%
+  }{#1}%
+}
+\long\def\spaceorsolbox#1#2{%
+  \ifthenelse{\boolean{issolution}}{%
+    \smallsolbox{\begin{minipage}[t]{1\columnwidth}%
+    #2%
+    \end{minipage}}%
+  }{\vspace{#1}}%
+}
+
+\long\def\qboxorsolbox#1#2{%
+  \ifthenelse{\boolean{issolution}}{%
+    \smallsolbox{\begin{minipage}[t]{1\columnwidth}%
+    #2%
+    \end{minipage}}%
+  }{#1}%
+}
+
+% Added by kk
+% New commands
+\def\intd{\mathrm{d}}
+\DeclareMathOperator{\cond}{cond}
+
+\newcommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+\newcommand{\cw}{\texttt}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\bm}[1]{\boldsymbol#1}
+%

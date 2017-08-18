@@ -1,0 +1,19 @@
+from numpy import *
+from scipy.special import *
+
+def besselRecursiveEst(n):
+    if n == 0:
+        return jv(0,20)
+    if n == 1:
+        return jv(1,20)
+    else:
+        return (2*(n-1)*besselRecursiveEst(n - 1))/20. - besselRecursiveEst(n - 2)
+    
+def error(n):
+    return abs( besselRecursiveEst(n) - jv(n,20) )
+    
+for i in arange(0,50,1):
+    print "For n = ", i
+    print "Bessel = ", jv(i,20)
+    print "Recursive approximation = ", besselRecursiveEst(i)
+    print "Error = ", error(i)
